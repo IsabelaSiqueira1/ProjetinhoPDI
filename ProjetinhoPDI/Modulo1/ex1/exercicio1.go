@@ -34,13 +34,17 @@ func Sumation(n int) int {
 
 }
 
-func Sumation2(n int) int {
-	var numero int
-
-	return Sumation2(numero + 1)
+func Sumation2(soma, num int) int {
+	if num <= 0 {
+		return soma
+	}
+	return num + Sumation2(soma, num-1)
 }
 
 func main() {
 	n := 10
+
+	fmt.Printf("A soma recursiva do número de 1 a %d é %d\n", n, Sumation2(0, n))
+
 	fmt.Println("A soma de todos os numeros de 1 a", n, "é:", Sumation(n))
 }
