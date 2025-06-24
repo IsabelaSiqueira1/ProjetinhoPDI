@@ -20,22 +20,26 @@ type Node struct {
 	next *Node
 }
 
-func insertOrder(head **Node, valor int) {
+func (ll *LinkedList) insertOrder(valor int) {
 	newNode := &Node{data: valor}
 
-	if head == nil || valor < (*head).data {
-		newNode.next = *head
-		*head = newNode
+	if ll.head == nil || valor < ll.head.data {
+		newNode.next = ll.head
+		ll.head = newNode
 		return
 	}
 
-	current := head
+	current := ll.head
 
-	for (*current).next != nil && (*current).next.data < valor {
-		(*current) = (*current).next
+	for current.next != nil && current.next.data < valor {
+		current = current.next
 	}
 
-	(*current).next = newNode
+	// [1]->[4]
+	// [1]->[3]->[4]-> nil
+
+	newNode.next = current.next
+	current.next = newNode
 }
 
 func main() {
@@ -75,11 +79,29 @@ func main() {
 // 	return count
 // }
 
-func (n *Node) printList() {
-	current := n
+// func (n *Node) printList() {
+// 	current := n
+// 	for current != nil {
+// 		fmt.Print(current.data, " --> ")
+// 		current = current.next
+// 	}
+// 	fmt.Print("null")
+// }
+
+func (ll *LinkedList) printList() {
+	current := ll.head
 	for current != nil {
 		fmt.Print(current.data, " --> ")
 		current = current.next
 	}
 	fmt.Print("null")
+}
+
+func (ll *LinkedList) ToSlice() []int {
+	s := []int{}
+	current := ll.head
+	for current.next != nil {
+		s = append(s, current.data)
+	}
+	return s
 }
