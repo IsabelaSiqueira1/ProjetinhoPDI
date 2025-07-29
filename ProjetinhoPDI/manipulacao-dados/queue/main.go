@@ -52,7 +52,6 @@ func (q *Queue) print() {
 	}
 
 	current := q.front
-	fmt.Print("Início -> ")
 	for current != nil {
 		fmt.Print(current.data)
 		if current.next != nil {
@@ -95,7 +94,7 @@ func (q *Queue) load(arquivo string) {
 
 func main() {
 	fila := &Queue{}
-	valores := []int{10, 5, 15, 3, 7}
+	valores := []int{3, 10, 15, 3, 7, 2, 1, 8, 10, 12, 20, 24, 55}
 
 	for _, v := range valores {
 		fila.enqueue(v)
@@ -108,8 +107,6 @@ func main() {
 
 	novaFila := &Queue{}
 	novaFila.load("dados_fila.txt")
-
-	novaFila.print()
 
 	// remove := fila.dequeue()
 	// fmt.Println("Removido da fila:", remove)
