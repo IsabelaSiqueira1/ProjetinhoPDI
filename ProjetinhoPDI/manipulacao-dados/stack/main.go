@@ -99,4 +99,10 @@ func main() {
 
 	novaPilha := &Stack{}
 	novaPilha.load("dados_pilha.txt")
+
+	// remove := pilha.pop()
+	// fmt.Println("Removido da pilha:", remove)
+
+	// fmt.Print("Pilha após remoção: ")
+	// pilha.print()
 }
