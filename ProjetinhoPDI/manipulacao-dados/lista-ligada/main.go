@@ -1,8 +1,8 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -33,6 +33,7 @@ func (ll *LinkedList) insert(valor int) {
 
 	newNode.next = current.next
 	current.next = newNode
+	//fmt.Printf("Inserido %d na lista ligada\n", valor)
 }
 
 func (ll *LinkedList) print() {
@@ -48,7 +49,7 @@ func (ll *LinkedList) print() {
 }
 
 func (ll *LinkedList) save(arquivo string) {
-	file, _ := os.Create(arquivo)
+	file, _ := os.OpenFile(arquivo, os.O_CREATE|os.O_WRONLY, 0644)
 	defer file.Close()
 
 	current := ll.head
@@ -62,16 +63,16 @@ func (ll *LinkedList) load(arquivo string) {
 	file, _ := os.Open(arquivo)
 	defer file.Close()
 
-	content, _ := io.ReadAll(file)
-	lines := strings.Split(string(content), "\n")
+	content := bufio.NewScanner(file) // readAll() não utilizar alocação de memoria desnecessária
+	//lines := strings.Split(string(content), "\n")
+	//ll.head = nil somente se quiser uma lista vazia antes de carregar os dados
 
-	ll.head = nil
-
-	for i := 0; i < len(lines); i++ {
-		line := strings.TrimSpace(lines[i])
+	for content.Scan() {
+		line := strings.TrimSpace(content.Text())
 
 		if line != "" {
 			valor, _ := strconv.Atoi(line)
+			//fmt.Printf("valor do load %d \n", valor)
 			ll.insert(valor)
 		}
 	}
@@ -79,17 +80,25 @@ func (ll *LinkedList) load(arquivo string) {
 
 func main() {
 	lista := &LinkedList{}
-	valores := []int{10, 5, 15, 3, 7}
+	valores := []int{10, 5, 15, 3, 7, 50, 11, 12}
+
+	lista.print()
 
 	for _, v := range valores {
 		lista.insert(v)
 	}
+
+	lista.print()
+
+	lista.load("dados.txt")
+	fmt.Print("load lista ligada: ")
+	lista.print()
 
 	fmt.Print("lista ligada: ")
 	lista.print()
 
 	lista.save("dados.txt")
 
-	novaLista := &LinkedList{}
-	novaLista.load("dados.txt")
+	fmt.Println("Lista ligada salva em dados.txt")
+
 }

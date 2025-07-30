@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -30,9 +31,11 @@ func (q *Queue) enqueue(valor int) {
 	}
 }
 
-func (q *Queue) dequeue() int {
+var queueEmptyErr = errors.New("Fila vazia")
+
+func (q *Queue) dequeue() (int, error) {
 	if q.front == nil {
-		return -1
+		return -1, queueEmptyErr
 	}
 
 	valor := q.front.data
@@ -42,7 +45,7 @@ func (q *Queue) dequeue() int {
 		q.rear = nil
 	}
 
-	return valor
+	return valor, nil
 }
 
 func (q *Queue) print() {
