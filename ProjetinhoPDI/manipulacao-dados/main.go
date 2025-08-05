@@ -1,0 +1,57 @@
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+
+	//"log"
+	//"net/http"
+	"os"
+
+	collection "main.go/interface"
+	leituraescrita "main.go/leitura-escrita"
+
+	//linkedlist "main.go/lista-ligada"
+	print "main.go/print"
+	queue "main.go/queue"
+	// stack "main.go/stack"
+)
+
+func processData(name string, struct_data collection.Collection, reader io.Reader, writer io.Writer) {
+	fmt.Println("Estrutura:", name)
+	leituraescrita.Read(reader, struct_data)
+
+	fmt.Print("conteúdo da estrutura: ")
+	print.PrintCollection(struct_data)
+
+	leituraescrita.Write(writer, struct_data)
+	fmt.Println()
+}
+
+func main() {
+	outFile, _ := os.OpenFile("dados.txt", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	defer outFile.Close()
+
+	buffer := &bytes.Buffer{}
+	buffer.WriteString("41\n2\n35\n4\n12\n7\n19\n")
+
+	ResponseWriter := io.MultiWriter(buffer, outFile)
+	processData("Buffer + Lista", queue.New(), buffer, ResponseWriter)
+
+	fmt.Println("Buffer final contém:\n" + buffer.String())
+
+	//  HTTP
+	// http.HandleFunc("/processData", func(w http.ResponseWriter, req *http.Request) {
+	// 	struct_data := linkedlist.New()
+
+	// 	leituraescrita.Read(req.Body, struct_data)
+	// 	print.PrintCollection(struct_data)
+
+	// 	ResponseWriter := io.MultiWriter(w, outFile)
+	// 	leituraescrita.Write(ResponseWriter, struct_data)
+	// })
+
+	// fmt.Println("Servidor HTTP rodando em :8080")
+	// log.Fatal(http.ListenAndServe(":8080", nil))
+}
