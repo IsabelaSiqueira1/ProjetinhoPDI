@@ -1,7 +1,5 @@
 package lista
 
-import collection "main.go/interface"
-
 type LinkedList struct {
 	head *Node
 }
@@ -11,8 +9,19 @@ type Node struct {
 	next *Node
 }
 
-func New() collection.Collection {
+func New() *LinkedList {
 	return &LinkedList{}
+}
+
+func (ll *LinkedList) Len() int {
+	count := 0
+	current := ll.head
+
+	for current != nil {
+		count++
+		current = current.next
+	}
+	return count
 }
 
 func (ll *LinkedList) Insert(valor int) {

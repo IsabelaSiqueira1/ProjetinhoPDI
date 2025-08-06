@@ -1,9 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io"
+	"log"
+	"net/http"
 
 	//"log"
 	//"net/http"
@@ -12,9 +13,8 @@ import (
 	collection "main.go/interface"
 	leituraescrita "main.go/leitura-escrita"
 
-	//linkedlist "main.go/lista-ligada"
+	lista "main.go/lista-ligada"
 	print "main.go/print"
-	queue "main.go/queue"
 	// stack "main.go/stack"
 )
 
@@ -33,25 +33,22 @@ func main() {
 	outFile, _ := os.OpenFile("dados.txt", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	defer outFile.Close()
 
-	buffer := &bytes.Buffer{}
-	buffer.WriteString("41\n2\n35\n4\n12\n7\n19\n")
+	// buffer := &bytes.Buffer{}
+	// buffer.WriteString("41\n2\n35\n4\n12\n7\n19\n")
 
-	ResponseWriter := io.MultiWriter(buffer, outFile)
-	processData("Buffer + Lista", queue.New(), buffer, ResponseWriter)
+	// ResponseWriter := io.MultiWriter(buffer, outFile)
+	// linkedlist := lista.New()
+	// processData("Buffer + fila", linkedlist, buffer, ResponseWriter)
+	// fmt.Println("buffer\n" + buffer.String())
 
-	fmt.Println("Buffer final contém:\n" + buffer.String())
+	//HTTP
+	http.HandleFunc("/processData", func(write http.ResponseWriter, req *http.Request) {
+		struct_data := lista.New()
 
-	//  HTTP
-	// http.HandleFunc("/processData", func(w http.ResponseWriter, req *http.Request) {
-	// 	struct_data := linkedlist.New()
+		ResponseWriter := io.MultiWriter(write, outFile)
+		processData("HTTP + lista ligada", struct_data, req.Body, ResponseWriter)
+	})
 
-	// 	leituraescrita.Read(req.Body, struct_data)
-	// 	print.PrintCollection(struct_data)
-
-	// 	ResponseWriter := io.MultiWriter(w, outFile)
-	// 	leituraescrita.Write(ResponseWriter, struct_data)
-	// })
-
-	// fmt.Println("Servidor HTTP rodando em :8080")
-	// log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Servidor HTTP rodando em :8081")
+	log.Fatal(http.ListenAndServe(":8081", nil))
 }

@@ -1,7 +1,5 @@
 package fila
 
-import collection "main.go/interface"
-
 type Queue struct {
 	front *Node // primeiro da fila
 	rear  *Node // último da fila
@@ -12,7 +10,7 @@ type Node struct {
 	next *Node
 }
 
-func New() collection.Collection {
+func New() *Queue {
 	return &Queue{}
 }
 

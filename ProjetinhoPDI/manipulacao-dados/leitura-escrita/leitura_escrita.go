@@ -6,11 +6,14 @@ import (
 	"io"
 	"strconv"
 	"strings"
-
-	collection "main.go/interface"
 )
 
-func Read(reader io.Reader, collection collection.Collection) error {
+type Collection interface {
+	Insert(int)
+	ForEach(func(int))
+}
+
+func Read(reader io.Reader, collection Collection) error {
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
@@ -26,7 +29,7 @@ func Read(reader io.Reader, collection collection.Collection) error {
 	return scanner.Err()
 }
 
-func Write(writer io.Writer, collection collection.Collection) error {
+func Write(writer io.Writer, collection Collection) error {
 	var err error
 	collection.ForEach(func(v int) {
 		if _, e := fmt.Fprintf(writer, "%d\n", v); e != nil {

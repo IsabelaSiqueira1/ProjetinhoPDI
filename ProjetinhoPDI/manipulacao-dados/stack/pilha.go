@@ -1,7 +1,5 @@
 package pilha
 
-import collection "main.go/interface"
-
 type Stack struct {
 	top *Node
 }
@@ -11,7 +9,7 @@ type Node struct {
 	next *Node
 }
 
-func New() collection.Collection {
+func New() *Stack {
 	return &Stack{}
 }
 
