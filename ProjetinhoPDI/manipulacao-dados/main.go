@@ -10,15 +10,14 @@ import (
 	//"net/http"
 	"os"
 
-	collection "main.go/interface"
-	leituraescrita "main.go/leitura-escrita"
+	leituraescrita "github.com/IsabelaSiqueira1/ProjetinhoPDI/ProjetinhoPDI/manipulacao-dados/leitura-escrita"
 
-	lista "main.go/lista-ligada"
-	print "main.go/print"
-	// stack "main.go/stack"
+	lista "github.com/IsabelaSiqueira1/ProjetinhoPDI/ProjetinhoPDI/manipulacao-dados/lista-ligada"
+	print "github.com/IsabelaSiqueira1/ProjetinhoPDI/ProjetinhoPDI/manipulacao-dados/print"
+	// stack "github.com/IsabelaSiqueira1/ProjetinhoPDI/ProjetinhoPDI/manipulacao-dados/stack"
 )
 
-func processData(name string, struct_data collection.Collection, reader io.Reader, writer io.Writer) {
+func processData(name string, struct_data leituraescrita.Collection, reader io.Reader, writer io.Writer) {
 	fmt.Println("Estrutura:", name)
 	leituraescrita.Read(reader, struct_data)
 
